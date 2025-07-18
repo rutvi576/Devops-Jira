@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default_Jira_Configuration</label>
+    <protected>false</protected>
+    <values>
+        <field>Assignee_Field__c</field>
+        <value xsi:type="xsd:string">customfield_10036</value>
+    </values>
+    <values>
+        <field>Default_User_ID__c</field>
+        <value xsi:type="xsd:string">005fh000000KlvdAAC</value>
+    </values>
+    <values>
+        <field>Error_Blank_Project_Key__c</field>
+        <value xsi:type="xsd:string">Project key cannot be blank</value>
+    </values>
+    <values>
+        <field>Error_Project_Not_Found__c</field>
+        <value xsi:type="xsd:string">Project record not found for Jira key:</value>
+    </values>
+    <values>
+        <field>Issue_Transition_Endpoint__c</field>
+        <value xsi:type="xsd:string">/rest/api/3/issue/{0}/transitions</value>
+    </values>
+    <values>
+        <field>Issue_Type_Bug__c</field>
+        <value xsi:type="xsd:string">10008</value>
+    </values>
+    <values>
+        <field>Issue_Type_Epic__c</field>
+        <value xsi:type="xsd:string">10000</value>
+    </values>
+    <values>
+        <field>Issue_Type_Story__c</field>
+        <value xsi:type="xsd:string">10006</value>
+    </values>
+    <values>
+        <field>Issue_Type_Subtask__c</field>
+        <value xsi:type="xsd:string">10010</value>
+    </values>
+    <values>
+        <field>Issue_Type_Task__c</field>
+        <value xsi:type="xsd:string">10007</value>
+    </values>
+    <values>
+        <field>Jira_API_Endpoint__c</field>
+        <value xsi:type="xsd:string">/rest/api/3/search</value>
+    </values>
+    <values>
+        <field>Jira_API_Token__c</field>
+        <value xsi:type="xsd:string">ATATT3xFfGF05WPP7j8ClLSaTnZOsGtmFkJD9bwDcGFbSKMJdzc3qWkkI_ekRGDX1l1ptD9epGb2uEc7bkROEuiDq4JDu467kXCT_Ka3oMi43_225sHqskJ5IRk4EYYsqq4E4wEmTbxfEMMN1aMBA16Ug16Wx1FP88FoAK-2-mGqC05LFpfUP2A=2824C165</value>
+    </values>
+    <values>
+        <field>Jira_Base_URL__c</field>
+        <value xsi:type="xsd:string">https://getoncrm.atlassian.net</value>
+    </values>
+    <values>
+        <field>Jira_Deployed_On_Prod_Transition_ID__c</field>
+        <value xsi:type="xsd:string">111</value>
+    </values>
+    <values>
+        <field>Jira_Deployed_On_Staging_Transition_ID__c</field>
+        <value xsi:type="xsd:string">71</value>
+    </values>
+    <values>
+        <field>Jira_Fields__c</field>
+        <value xsi:type="xsd:string">key,summary,status,parent,customfield_10008,customfield_10157,customfield_10036,worklog,customfield_10020,customfield_10018,issuetype</value>
+    </values>
+    <values>
+        <field>Jira_QA_Transition_ID__c</field>
+        <value xsi:type="xsd:string">31</value>
+    </values>
+    <values>
+        <field>Jira_User_Name__c</field>
+        <value xsi:type="xsd:string">it.support@getoncrm.com</value>
+    </values>
+    <values>
+        <field>Max_Results__c</field>
+        <value xsi:type="xsd:double">50.0</value>
+    </values>
+    <values>
+        <field>Parent_Status__c</field>
+        <value xsi:type="xsd:string">In Progress</value>
+    </values>
+    <values>
+        <field>Request_Timeout__c</field>
+        <value xsi:type="xsd:double">60000.0</value>
+    </values>
+    <values>
+        <field>SF_FULL_STAGE_NAME__c</field>
+        <value xsi:type="xsd:string">FULL</value>
+    </values>
+    <values>
+        <field>SF_In_UAT_Status__c</field>
+        <value xsi:type="xsd:string">IN UAT</value>
+    </values>
+    <values>
+        <field>SF_READY_TO_UAT_FIELD__c</field>
+        <value xsi:type="xsd:string">Ready_for_UAT__c</value>
+    </values>
+    <values>
+        <field>SF_Ready_For_QA_Status__c</field>
+        <value xsi:type="xsd:string">IN QA</value>
+    </values>
+    <values>
+        <field>SF_Status_Closed__c</field>
+        <value xsi:type="xsd:string">Closed</value>
+    </values>
+    <values>
+        <field>Sub_Task_status__c</field>
+        <value xsi:type="xsd:string">Closed</value>
+    </values>
+    <values>
+        <field>Work_Item_Closed_Status__c</field>
+        <value xsi:type="xsd:string">CLOSED</value>
+    </values>
+    <values>
+        <field>Work_Item_Creation_Field__c</field>
+        <value xsi:type="xsd:string">customfield_10157</value>
+    </values>
+    <values>
+        <field>Work_Item_In_Progress_Status__c</field>
+        <value xsi:type="xsd:string">IN_PROGRESS</value>
+    </values>
+    <values>
+        <field>Work_Item_Promoted_Status__c</field>
+        <value xsi:type="xsd:string">Promoted</value>
+    </values>
+</CustomMetadata>

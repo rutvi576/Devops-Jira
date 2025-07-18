@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>DevOpsFlow_Sync_UserGuide</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DevOpsFlow_Sync_UserGuide</shortDescription>
+        <value>https://drive.google.com/file/d/1XNZZAD2kjvqqIuMy9CxLgvU8X9yZxTlg/preview</value>
+    </labels>
+    <labels>
+        <fullName>Jira_API_Token</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Jira_API_Token</shortDescription>
+        <value>ATATT3xFfGF0PNMZlpkpGLnJwAwtuvR_zmx6RaDKbVMIIYF6rtehQRlHJs2W7CwvbfFDdlxdn8UXkKbdS-rGZMaT4wheU50zQqXGN69biDYoXqxOHRCGqVlsFI_fe4ltEapQT1MkDUtDjntKujf8AUeBe1tZWn46I05--xXZTwXMlhPZwA7EZ1k=D077C62B</value>
+    </labels>
+    <labels>
+        <fullName>Jira_User_Name</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Jira_User_Name</shortDescription>
+        <value>dev@getoncrm.com</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Jira_devops</fullName>
+    <columns>DeveloperName</columns>
+    <columns>Work_Item_Status__c</columns>
+    <columns>Jira_Story_Status__c</columns>
+    <columns>Jira_Ticket_Status__c</columns>
+    <columns>Jira_Transition_ID__c</columns>
+    <columns>Is_Active__c</columns>
+    <columns>Order__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Jira devops</label>
+</ListView>
