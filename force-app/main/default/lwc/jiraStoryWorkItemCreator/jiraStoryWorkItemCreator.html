@@ -1,0 +1,220 @@
+<template>
+    <lightning-card title="Jira Story & Work Item Creator" icon-name="standard:work_order">
+        
+        <!-- Header with action buttons -->
+        <div slot="actions">
+            <lightning-button 
+                label="Refresh" 
+                icon-name="utility:refresh" 
+                onclick={handleRefresh}
+                disabled={isLoading}>
+            </lightning-button>
+            <lightning-button 
+                label="Close" 
+                icon-name="utility:close" 
+                onclick={handleClose}
+                class="slds-m-left_x-small">
+            </lightning-button>
+        </div>
+
+        <div class="slds-card__body slds-card__body_inner">
+            
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-p-around_large">
+                    <lightning-spinner 
+                        alternative-text="Processing Jira issues..." 
+                        size="large">
+                    </lightning-spinner>
+                    <p class="slds-text-heading_small slds-m-top_medium">
+                        Processing Jira issues and creating records...
+                    </p>
+                </div>
+            </template>
+
+            <!-- Error Message -->
+            <template if:true={hasError}>
+                <div class="slds-m-bottom_medium">
+                    <lightning-formatted-text 
+                        value={error}
+                        class="slds-text-color_error">
+                    </lightning-formatted-text>
+                </div>
+            </template>
+
+            <!-- Results Section -->
+            <template if:true={hasResults}>
+                
+                <!-- Summary -->
+                <div class="slds-m-bottom_medium">
+                    <lightning-formatted-text 
+                        value={summaryMessage}
+                        class="slds-text-heading_small slds-text-color_success">
+                    </lightning-formatted-text>
+                </div>
+
+                <!-- No Stories Message -->
+                <template if:false={hasStories}>
+                    <div class="slds-align_absolute-center slds-p-around_large">
+                        <lightning-icon 
+                            icon-name="utility:info" 
+                            alternative-text="Info" 
+                            size="large"
+                            class="slds-m-bottom_small">
+                        </lightning-icon>
+                        <p class="slds-text-heading_small">
+                            No stories were created. This might be because:
+                        </p>
+                        <ul class="slds-list_dotted slds-m-top_small">
+                            <li>No Jira issues found with "IN PROGRESS" status</li>
+                            <li>All matching issues already exist in Salesforce</li>
+                            <li>The project key might be incorrect</li>
+                        </ul>
+                    </div>
+                </template>
+
+                <!-- Stories and Work Items Accordion -->
+                <template if:true={hasStories}>
+                    <div class="slds-m-top_medium">
+                        <h3 class="slds-text-heading_small slds-m-bottom_small">
+                            Created Stories and Work Items
+                        </h3>
+                        
+                        <lightning-accordion 
+                            allow-multiple-sections-open="true"
+                            active-section-name="">
+                            
+                            <!-- Parent Story Sections -->
+                            <template for:each={accordionSections} for:item="story">
+                                <lightning-accordion-section 
+                                    key={story.name} 
+                                    name={story.name} 
+                                    label={story.label}>
+                                    
+                                    <!-- Story Details with Progress Bar -->
+                                    <div class="slds-m-bottom_medium">
+                                        <div class="slds-grid slds-wrap slds-gutters_small">
+                                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                                <a href="#" onclick={handleStoryLinkClick} data-id={story.id}>
+                                                    <lightning-formatted-text 
+                                                        value={story.label}
+                                                        class="slds-text-heading_small slds-text-color_link">
+                                                    </lightning-formatted-text>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Progress Section -->
+                                        <template if:true={story.completionPercentage}>
+                                            <div class="slds-m-top_small">
+                                                <div class="slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                                                    <div class="slds-text-body_small slds-text-color_weak">
+                                                        Story Progress
+                                                    </div>
+                                                    <div class="slds-text-body_small slds-text-color_weak">
+                                                        {story.completionPercentage}%
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Custom Progress Bar -->
+                                                <div class="progress-container">
+                                                    <div class="progress-bar" style={story.progressBarStyle}>
+                                                        <div class="progress-fill" style={story.progressFillStyle}></div>
+                                                        <div class="progress-text">{story.completionPercentage}%</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Progress Status Badge -->
+                                                <div class="slds-m-top_xx-small">
+                                                    <lightning-badge 
+                                                        label={story.progressStatus}
+                                                        class={story.progressBadgeClass}>
+                                                    </lightning-badge>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <!-- Work Items List -->
+                                    <template if:true={story.workItems}>
+                                        <template if:true={story.workItems.length}>
+                                            <div class="slds-m-left_medium">
+                                                <h4 class="slds-text-heading_small slds-m-bottom_small">
+                                                    Work Items ({story.workItems.length})
+                                                </h4>
+                                                
+                                                <!-- Work Items Table -->
+                                                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                                    <thead>
+                                                        <tr class="slds-line-height_reset">
+                                                            <th scope="col">
+                                                                <div class="slds-text-title_caps">Subject</div>
+                                                            </th>
+                                                            <th scope="col">
+                                                                <div class="slds-text-title_caps">Assigned To</div>
+                                                            </th>
+                                                            <th scope="col">
+                                                                <div class="slds-text-title_caps">Status</div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={story.workItems} for:item="workItem">
+                                                            <tr key={workItem.Id} class="slds-hint-parent">
+                                                                <td>
+                                                                    <div class="slds-truncate">
+                                                                        <a href="#" onclick={handleWorkItemLinkClick} data-id={workItem.Id}>
+                                                                            <lightning-formatted-text 
+                                                                                value={workItem.sf_devops__Subject__c}
+                                                                                class="slds-text-color_link">
+                                                                            </lightning-formatted-text>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="slds-truncate">
+                                                                        <template if:true={workItem.sf_devops__Assigned_To__r}>
+                                                                            <lightning-formatted-text 
+                                                                                value={workItem.sf_devops__Assigned_To__r.Name}>
+                                                                            </lightning-formatted-text>
+                                                                        </template>
+                                                                        <template if:false={workItem.sf_devops__Assigned_To__r}>
+                                                                            <lightning-formatted-text 
+                                                                                value="Not Assigned">
+                                                                            </lightning-formatted-text>
+                                                                        </template>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="slds-truncate">
+                                                                        <lightning-badge 
+                                                                            label={workItem.sf_devops__State__c}
+                                                                            class="slds-badge_success">
+                                                                        </lightning-badge>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </template>
+                                        
+                                        <!-- No Work Items Message -->
+                                        <template if:false={story.workItems.length}>
+                                            <div class="slds-m-left_medium">
+                                                <p class="slds-text-color_weak">
+                                                    No work items found for this story.
+                                                </p>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </lightning-accordion-section>
+                            </template>
+                        </lightning-accordion>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

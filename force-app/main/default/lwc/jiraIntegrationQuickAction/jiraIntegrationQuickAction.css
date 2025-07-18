@@ -1,0 +1,11 @@
+.quick-action-container {
+    position: relative;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+:host {
+    display: block;
+    position: relative;
+    z-index: 1000;
+}

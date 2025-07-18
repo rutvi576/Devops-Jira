@@ -1,0 +1,29 @@
+/* Add this CSS to your jiraIntegrationModal.css file */
+
+.slds-modal {
+    z-index: 9000 !important;
+    position: fixed !important;
+}
+
+.slds-backdrop {
+    z-index: 8999 !important;
+    position: fixed !important;
+}
+
+/* Ensure modal container is properly positioned */
+.slds-modal__container {
+    z-index: 9001 !important;
+    position: relative !important;
+}
+
+/* Fix for Lightning Experience */
+:host {
+    z-index: 9000 !important;
+}
+
+/* Additional fix for modal visibility */
+.slds-modal.slds-fade-in-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translate(0, 0) !important;
+}

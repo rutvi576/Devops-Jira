@@ -1,0 +1,13 @@
+<template>
+     <div class="quick-action-container">
+        <lightning-button
+            label="Open Jira Integration"
+            variant="brand"
+            onclick={handleOpenModal}
+            class="slds-m-around_small"
+        ></lightning-button>
+        <c-jira-integration-modal
+            record-id={recordId}
+        ></c-jira-integration-modal>
+    </div>
+</template>

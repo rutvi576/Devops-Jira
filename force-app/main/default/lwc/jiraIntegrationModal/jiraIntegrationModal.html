@@ -1,0 +1,192 @@
+<template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        onclick={closeModal}
+                        alternative-text="Close"
+                        variant="bare-inverse"
+                        class="slds-modal__close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                        <lightning-icon icon-name="custom:custom63" size="small" class="slds-m-right_small"></lightning-icon>
+                        Jira Integration - Process Issues
+                    </h2>
+                </header>
+                
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <!-- Project Key Input -->
+                    <div class="slds-form-element slds-m-bottom_medium">
+                        <label class="slds-form-element__label" for="project-key-input">
+                            <abbr class="slds-required" title="required">*</abbr>
+                            Jira Project Key
+                        </label>
+                        <div class="slds-form-element__control">
+                            <lightning-input
+                                id="project-key-input"
+                                type="text"
+                                value={projectKey}
+                                onchange={handleProjectKeyChange}
+                                placeholder="Enter Jira project key (e.g., PROJ)"
+                                required
+                                class="slds-input">
+                            </lightning-input>
+                        </div>
+                    </div>
+                    
+                    <!-- Processing Status -->
+                    <template if:true={isProcessing}>
+                        <div class="slds-align_absolute-center slds-m-around_large">
+                            <lightning-spinner alternative-text="Processing Jira issues..." size="medium"></lightning-spinner>
+                            <p class="slds-m-top_small slds-text-color_weak">Processing Jira issues...</p>
+                        </div>
+                    </template>
+                    
+                    <!-- Error Messages -->
+                    <template if:true={hasErrors}>
+                        <div class="slds-m-bottom_medium">
+                            <template for:each={errorMessages} for:item="error">
+                                <div key={error} class="slds-notification slds-notification_toast slds-theme_error slds-m-bottom_x-small">
+                                    <div class="slds-notification__body">
+                                        <lightning-icon icon-name="utility:error" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                        {error}
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    
+                    <!-- Success Message -->
+                    <template if:true={showSuccessMessage}>
+                        <div class="slds-notification slds-notification_toast slds-theme_success slds-m-bottom_medium">
+                            <div class="slds-notification__body">
+                                <lightning-icon icon-name="utility:success" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                Processing completed! Created {processingResult.storiesCreated} stories and {processingResult.workItemsCreated} work items.
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <!-- Results Accordion -->
+                    <template if:true={showResults}>
+                        <div class="slds-m-top_medium">
+                            <h3 class="slds-section__title slds-theme_shade slds-p-horizontal_medium slds-p-vertical_x-small">
+                                <lightning-icon icon-name="utility:list" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                Processing Results
+                            </h3>
+                            
+                            <lightning-accordion allow-multiple-sections-open class="slds-m-top_small">
+                                <!-- Stories Section -->
+                                <lightning-accordion-section 
+                                    name="stories" 
+                                    label={storiesLabel}
+                                    class="custom-accordion-section">
+                                    <div slot="actions">
+                                        <lightning-badge label={processingResult.storiesCreated} variant="success"></lightning-badge>
+                                    </div>
+                                    
+                                    <template if:true={hasStories}>
+                                        <div class="slds-p-around_small">
+                                            <template for:each={createdStories} for:item="story">
+                                                <div key={story.id} class="slds-box slds-box_x-small slds-m-bottom_x-small slds-theme_default">
+                                                    <div class="slds-grid slds-grid_align-spread">
+                                                        <div class="slds-col">
+                                                            <p class="slds-text-heading_small slds-truncate" title={story.name}>
+                                                                <lightning-icon icon-name="custom:custom18" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                                                {story.name}
+                                                            </p>
+                                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                                Key: {story.jiraKey}
+                                                            </p>
+                                                        </div>
+                                                        <div class="slds-col slds-no-flex">
+                                                            <lightning-badge label="Story" variant="inverse"></lightning-badge>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    
+                                    <template if:false={hasStories}>
+                                        <div class="slds-align_absolute-center slds-p-around_medium">
+                                            <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_x-small"></lightning-icon>
+                                            <p class="slds-text-color_weak">No stories were created in this processing cycle.</p>
+                                        </div>
+                                    </template>
+                                </lightning-accordion-section>
+                                
+                                <!-- Work Items Section -->
+                                <lightning-accordion-section 
+                                    name="workitems" 
+                                    label={workItemsLabel}
+                                    class="custom-accordion-section">
+                                    <div slot="actions">
+                                        <lightning-badge label={processingResult.workItemsCreated} variant="success"></lightning-badge>
+                                    </div>
+                                    
+                                    <template if:true={hasWorkItems}>
+                                        <div class="slds-p-around_small">
+                                            <template for:each={createdWorkItems} for:item="workItem">
+                                                <div key={workItem.id} class="slds-box slds-box_x-small slds-m-bottom_x-small slds-theme_alt-inverse">
+                                                    <div class="slds-grid slds-grid_align-spread">
+                                                        <div class="slds-col">
+                                                            <p class="slds-text-heading_small slds-truncate" title={workItem.subject}>
+                                                                <lightning-icon icon-name="utility:tasks" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                                                {workItem.subject}
+                                                            </p>
+                                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                                Key: {workItem.jiraKey}
+                                                            </p>
+                                                            <template if:true={workItem.parentStory}>
+                                                                <p class="slds-text-body_small slds-text-color_weak">
+                                                                    Parent: {workItem.parentStory}
+                                                                </p>
+                                                            </template>
+                                                        </div>
+                                                        <div class="slds-col slds-no-flex">
+                                                            <lightning-badge label="Work Item" variant="warning"></lightning-badge>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    
+                                    <template if:false={hasWorkItems}>
+                                        <div class="slds-align_absolute-center slds-p-around_medium">
+                                            <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_x-small"></lightning-icon>
+                                            <p class="slds-text-color_weak">No work items were created in this processing cycle.</p>
+                                        </div>
+                                    </template>
+                                </lightning-accordion-section>
+                            </lightning-accordion>
+                        </div>
+                    </template>
+                </div>
+                
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        variant="neutral" 
+                        label="Cancel" 
+                        onclick={closeModal}
+                        class="slds-m-right_x-small">
+                    </lightning-button>
+                    <lightning-button 
+                        variant="brand" 
+                        label="Process Issues" 
+                        onclick={handleProcessIssues}
+                        disabled={isProcessButtonDisabled}
+                        class="slds-m-left_x-small">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

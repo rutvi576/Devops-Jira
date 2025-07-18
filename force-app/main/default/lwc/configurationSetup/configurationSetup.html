@@ -1,0 +1,306 @@
+<!--
+  @description       : Simplified LWC for configuration setup with three tabs
+  @author            : Grok
+  @last modified on  : 07-14-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <!-- Showing spinner while data is loading -->
+  <template if:true={showSpinner}>
+    <div class="slds-m-top_medium">
+      <lightning-spinner
+        alternative-text="Processing"
+        class="spinner-position"
+        size="large"
+      ></lightning-spinner>
+    </div>
+  </template>
+  <div class="mainDiv">
+    <div class="slds-grid slds-wrap custom-sidebar">
+      <!-- Sidebar with 30% width -->
+      <div class="slds-col slds-size_2-of-12 customHeight">
+        <ul class="nav-list">
+          <li
+            class="nav-item active"
+            data-item="setupGuide"
+            onclick={handleNavigation}
+          >
+            <span class="nav-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 7V21"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 12H18"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 8H18"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3 18C2.73478 18 2.48043 17.8946 2.29289 17.7071C2.10536 17.5196 2 17.2652 2 17V4C2 3.73478 2.10536 3.48043 2.29289 3.29289C2.48043 3.10536 2.73478 3 3 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7C12 5.93913 12.4214 4.92172 13.1716 4.17157C13.9217 3.42143 14.9391 3 16 3H21C21.2652 3 21.5196 3.10536 21.7071 3.29289C21.8946 3.48043 22 3.73478 22 4V17C22 17.2652 21.8946 17.5196 21.7071 17.7071C21.5196 17.8946 21.2652 18 21 18H15C14.2044 18 13.4413 18.3161 12.8787 18.8787C12.3161 19.4413 12 20.2044 12 21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H3Z"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M6 12H8"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M6 8H8"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <span class="nav-label">Setup Guide</span>
+          </li>
+          <li class="nav-item" data-item="userGuide" onclick={handleNavigation}>
+            <span class="nav-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 7V21"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 12H18"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 8H18"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3 18C2.73478 18 2.48043 17.8946 2.29289 17.7071C2.10536 17.5196 2 17.2652 2 17V4C2 3.73478 2.10536 3.48043 2.29289 3.29289C2.48043 3.10536 2.73478 3 3 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7C12 5.93913 12.4214 4.92172 13.1716 4.17157C13.9217 3.42143 14.9391 3 16 3H21C21.2652 3 21.5196 3.10536 21.7071 3.29289C21.8946 3.48043 22 3.73478 22 4V17C22 17.2652 21.8946 17.5196 21.7071 17.7071C21.5196 17.8946 21.2652 18 21 18H15C14.2044 18 13.4413 18.3161 12.8787 18.8787C12.3161 19.4413 12 20.2044 12 21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H3Z"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M6 12H8"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M6 8H8"
+                  stroke="#667085"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <span class="nav-label">Jira User Guide</span>
+          </li>
+          <li
+            class="nav-item"
+            data-item="connectGoogleGuide"
+            onclick={handleNavigation}
+          >
+            <span class="nav-icon">
+              <svg
+                id="Google-Drive--Streamline-Atlas"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="-1 -1 24 24"
+                height="24"
+                width="24"
+              >
+                <desc>
+                  Google Drive Streamline Icon: https://streamlinehq.com
+                </desc>
+                <path
+                  d="m7.498333333333333 2.255 7.003333333333333 0 6.123333333333333 12.246666666666666 -2.6216666666666666 5.2525 -14.006666666666666 0 -2.6216666666666666 -5.2525L7.498333333333333 2.255z"
+                  fill="none"
+                  stroke="#667085"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="m7.498333333333333 2.2458333333333336 7.003333333333333 12.255833333333332"
+                  fill="none"
+                  stroke="#667085"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="m20.625 14.501666666666667 -13.126666666666667 0"
+                  fill="none"
+                  stroke="#667085"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="M3.9966666666666666 19.754166666666666 11 8.378333333333334"
+                  fill="none"
+                  stroke="#667085"
+                  stroke-miterlimit="10"
+                  stroke-width="2"
+                ></path>
+              </svg>
+            </span>
+            <span class="nav-label">Connect To Jira</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Content area with 70% width -->
+      <div class="slds-col slds-size_10-of-12 contentNav">
+        <template if:true={showSetupGuide}>
+          <div class="content-box">
+            <div class="slds-col slds-size_12-of-12 iframedoc">
+              <iframe
+                src={setupGuide_manual_link}
+                width="100%"
+                style="height: 100%"
+              ></iframe>
+            </div>
+          </div>
+        </template>
+        <template if:true={showUserGuide}>
+          <div class="content-box">
+            <div class="slds-col slds-size_12-of-12 iframedoc">
+              <iframe
+                src={drive_user_Manual_Document_Link}
+                width="100%"
+                style="height: 100%"
+              ></iframe>
+            </div>
+          </div>
+        </template>
+        <template if:true={showConnectJiraGuide}>
+    <div class="content-box">
+        <div class="slds-p-around_medium form">
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userName">User Name</label>
+                        <div class="input-container">
+                            <input
+                                type={userNameType}
+                                id="userName"
+                                placeholder="Enter your UserName"
+                                name="userName"
+                                value={userName}
+                                onchange={handleInputChange}
+                                required
+                            />
+                            <button
+                                class="toggle-button"
+                                type="button"
+                                onclick={toggleUserNameVisibility}
+                                aria-label="Toggle Secret Visibility"
+                            >
+                                <lightning-icon
+                                    icon-name={toggleIconClientId}
+                                    size="x-small"
+                                    alternative-text="Toggle Secret Visibility"
+                                ></lightning-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apiKey">API Key</label>
+                        <div class="input-container">
+                            <input
+                                type={apiKeyType}
+                                id="apiKey"
+                                placeholder="Enter your API Key"
+                                name="apiKey"
+                                value={apiKey}
+                                onchange={handleInputChange}
+                                required
+                            />
+                            <button
+                                class="toggle-button"
+                                type="button"
+                                onclick={toggleApiKeyVisibility}
+                                aria-label="Toggle Secret Visibility"
+                            >
+                                <lightning-icon
+                                    icon-name={toggleIconClientSecret}
+                                    size="x-small"
+                                    alternative-text="Toggle Secret Visibility"
+                                ></lightning-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footerButton">
+                <button class="verify-button" onclick={verifyCredentials}>
+                    Verify
+                </button>
+            </div>
+            <!-- User Profile or Error Display -->
+            <template if:true={showSpinner}>
+                <div class="slds-m-top_medium">
+                    <lightning-spinner
+                        alternative-text="Verifying credentials..."
+                        size="medium"
+                    ></lightning-spinner>
+                </div>
+            </template>
+            <template if:true={userProfile}>
+                <div class="slds-m-top_medium user-profile">
+                    <h3>Jira User Profile</h3>
+                    <div class="slds-box">
+                        <p><strong>Display Name:</strong> {userProfile.displayName}</p>
+                        <p><strong>Email:</strong> {userProfile.emailAddress}</p>
+                        <p><strong>Account ID:</strong> {userProfile.accountId}</p>
+                    </div>
+                </div>
+            </template>
+            <template if:true={errorMessage}>
+                <div class="slds-m-top_medium">
+                    <div class="slds-text-color_error">{errorMessage}</div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
+      </div>
+    </div>
+  </div>
+</template>
